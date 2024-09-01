@@ -1,0 +1,3 @@
+# Ignore batch files for starting frontend and backend
+start-frontend.bat
+start-backend.bat
