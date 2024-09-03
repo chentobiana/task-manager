@@ -1,24 +1,26 @@
-// src/components/TaskFilter.jsx
 import React, { useState } from 'react';
+import { Select, DatePicker, Button } from 'antd';
+
+const { Option } = Select;
 
 function TaskFilter({ onFilter }) {
   const [status, setStatus] = useState('');
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(null);
 
   const handleFilter = () => {
-    onFilter({ status, date });
+    onFilter({ status, date: date ? date.format('YYYY-MM-DD') : '' });
   };
 
   return (
-    <div>
-      <select value={status} onChange={(e) => setStatus(e.target.value)}>
-        <option value="">All Statuses</option>
-        <option value="Pending">Pending</option>
-        <option value="In Progress">In Progress</option>
-        <option value="Completed">Completed</option>
-      </select>
-      <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-      <button onClick={handleFilter}>Filter</button>
+    <div style={{ marginBottom: '20px' }}>
+      <Select value={status} onChange={value => setStatus(value)} style={{ width: 200, marginRight: 8 }} placeholder="Select status">
+        <Option value="">All Statuses</Option>
+        <Option value="Pending">Pending</Option>
+        <Option value="In Progress">In Progress</Option>
+        <Option value="Completed">Completed</Option>
+      </Select>
+      <DatePicker onChange={setDate} style={{ marginRight: 8 }} />
+      <Button onClick={handleFilter}>Filter</Button>
     </div>
   );
 }

@@ -9,6 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 let tasks = [];
+let currentId = 1; // Initialize a counter for task IDs
 
 // Middleware to log each request
 app.use((req, res, next) => {
@@ -35,7 +36,7 @@ app.post('/api/tasks', (req, res) => {
         return res.status(400).json({ message: "All fields are required." });
     }
 
-    const newTask = { id: tasks.length + 1, name, description, dueDate, status };
+    const newTask = { id: currentId++, name, description, dueDate, status }; // Assign an incremental ID
     tasks.push(newTask);
     res.status(200).json(newTask);
 });
