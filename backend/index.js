@@ -1,6 +1,10 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+
+let tasks = [];
 
 dotenv.config();
 
@@ -8,7 +12,50 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-let tasks = [];
+
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log('MongoDB connected'))
+    .catch((err) => console.error('MongoDB connection error:', err));
+
+
+const taskSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    dueDate: {
+        type: Date,
+        required: true
+    },
+    status: {
+        type: String,
+        required: true
+    },
+    dateAdded: {
+        type: Date,
+        default: Date.now
+    },
+    lastModified: {
+        type: Date,
+        default: Date.now
+    }
+});
+
+// Convert _id to string when converting to JSON
+taskSchema.set('toJSON', {
+    transform: (doc, ret) => {
+        ret._id = ret._id.toString();
+        return ret;
+    }
+});
+
+
+const Task = mongoose.model('tasks', taskSchema);
+
 
 // Middleware to log each request
 app.use((req, res, next) => {
@@ -22,22 +69,37 @@ app.use((req, res, next) => {
     next();
 });
 
-// Get all tasks
-app.get('/api/tasks', (req, res) => {
-    res.json(tasks);
+// Get all task IDs
+app.get('/api/tasks', async (req, res) => {
+    try {
+        console.log('In get function');
+
+        // const tasks = await Task.find({}, '_id'); // Fetch only the _id field
+        // const taskIds = tasks.map(task => task._id); // Convert to a list of string IDs
+        // res.json(taskIds);
+        res.json([]);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
 });
 
 // Add a new task
-app.post('/api/tasks', (req, res) => {
+app.post('/api/tasks', async (req, res) => {
     const { name, description, dueDate, status } = req.body;
+    try{
 
-    if (!name || !description || !dueDate || !status) {
-        return res.status(400).json({ message: "All fields are required." });
+        if (!name || !description || !dueDate || !status) {
+                return res.status(400).json({ message: "All fields are required." });
+            }
+
+        const newTask = new Task({name: name, description:description, dueDate:dueDate, status:status});
+        const savedTask = await newTask.save();
+        console.log('Saved task is:', savedTask);
+
+        res.status(200).json(savedTask);
+    }catch (err){
+        res.status(500).json({message:err.message})
     }
-
-    const newTask = { id: tasks.length + 1, name, description, dueDate, status };
-    tasks.push(newTask);
-    res.status(200).json(newTask);
 });
 
 // Update a task
