@@ -2,7 +2,7 @@ import React from 'react';
 import { Table, Popconfirm } from 'antd';
 import axios from 'axios';
 
- TaskList = ({ tasks, onDeleteTask }) => {
+const TaskList = ({ tasks, onDeleteTask }) => {
   console.log("Tasks array:", tasks); // Log the tasks array to the console
  
  

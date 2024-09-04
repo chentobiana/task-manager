@@ -38,6 +38,10 @@ function App() {
   const handleAddTask = (newTask) => {
     setTasks([...tasks, newTask]);
     setFilteredTasks([...tasks, newTask]);
+
+    // Hide the modal after adding the task
+    setIsModalVisible(false);
+
   };
 
   const handleUpdateTask = (updatedTask) => {

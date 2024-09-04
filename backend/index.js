@@ -50,6 +50,14 @@ const taskSchema = new mongoose.Schema({
 taskSchema.set('toJSON', {
     transform: (doc, ret) => {
         ret._id = ret._id.toString();
+        ret.dueDate = ret.dueDate.toISOString().split('T')[0]; // Format to "YYYY-MM-DD"
+        return ret;
+    }
+});
+
+taskSchema.set('toObject', {
+    transform: (doc, ret) => {
+        ret._id = ret._id.toString(); // Convert ObjectId to string
         return ret;
     }
 });
@@ -94,8 +102,8 @@ app.post('/api/tasks', async (req, res) => {
 
         const newTask = new Task(req.body);
         const savedTask = await newTask.save();
-        console.log('Saved task id:', savedTask._id);
-        res.status(201).json({ id: savedTask._id }); // Return the ID to the frontend
+        console.log('Saved task :', savedTask);
+        res.status(200).json({ _id: savedTask._id, name: savedTask.name, description: savedTask.description, dueDate: dueDate, status: savedTask.status }); // Return the ID to the frontend
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
