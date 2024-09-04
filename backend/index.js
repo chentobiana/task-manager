@@ -92,13 +92,12 @@ app.post('/api/tasks', async (req, res) => {
                 return res.status(400).json({ message: "All fields are required." });
             }
 
-        const newTask = new Task({name: name, description:description, dueDate:dueDate, status:status});
+        const newTask = new Task(req.body);
         const savedTask = await newTask.save();
-        console.log('Saved task is:', savedTask);
-
-        res.status(200).json(savedTask);
-    }catch (err){
-        res.status(500).json({message:err.message})
+        console.log('Saved task id:', savedTask._id);
+        res.status(201).json({ id: savedTask._id }); // Return the ID to the frontend
+    } catch (err) {
+        res.status(400).json({ message: err.message });
     }
 });
 
@@ -121,10 +120,23 @@ app.put('/api/tasks/:id', (req, res) => {
 });
 
 // Delete a task
-app.delete('/api/tasks/:id', (req, res) => {
-    const { id } = req.params;
-    tasks = tasks.filter(task => task.id != id);
-    res.status(200).json({ message: "Task deleted successfully." });
+app.delete('/api/tasks/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        console.log('in delete id is: ', id);
+
+        const deletedTask = await Task.findByIdAndDelete(id);
+        if (!deletedTask) {
+            console.log('Task not found');
+            return res.status(404).json({ message: 'Task not found' });
+        }
+        else{
+            console.log('Task found');
+        }
+        res.status(200).json({ message: 'Task deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
 });
 
 const PORT = process.env.PORT || 5000;
