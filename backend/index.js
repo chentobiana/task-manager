@@ -33,7 +33,8 @@ const taskSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        required: true
+        required: true,
+        enum: ['Pending', 'In Progress', 'Completed'] // Ensuring only valid statuses are used
     },
     dateAdded: {
         type: Date,
@@ -56,6 +57,8 @@ taskSchema.set('toJSON', {
 
 const Task = mongoose.model('tasks', taskSchema);
 
+module.exports = Task;
+
 
 // Middleware to log each request
 app.use((req, res, next) => {
@@ -72,16 +75,13 @@ app.use((req, res, next) => {
 // Get all task IDs
 app.get('/api/tasks', async (req, res) => {
     try {
-        console.log('In get function');
-
-        // const tasks = await Task.find({}, '_id'); // Fetch only the _id field
-        // const taskIds = tasks.map(task => task._id); // Convert to a list of string IDs
-        // res.json(taskIds);
-        res.json([]);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
+        const tasks = await Task.find({});
+        res.json(tasks); // This will include the _id as a string due to the toJSON transformation
+    } catch (error) {
+        res.status(500).json({ message: 'Error retrieving tasks', error });
     }
 });
+
 
 // Add a new task
 app.post('/api/tasks', async (req, res) => {
