@@ -19,6 +19,7 @@ function TaskForm({ onTaskAdded }) {
     try {
       const response = await axios.post('http://localhost:5000/api/tasks', task);
       if (response.status === 200) {
+        console.log(`Task successfully added. Response: ${response.data}`);
         onTaskAdded(response.data); // Pass the added task to the parent component
         form.resetFields(); // Reset form fields after successful submission
       }

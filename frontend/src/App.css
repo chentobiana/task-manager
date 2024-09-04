@@ -1,8 +1,13 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
   padding: 2rem;
-  text-align: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .logo {
@@ -34,7 +39,10 @@
 }
 
 .card {
+  width: 100%;
+  height: 100%;
   padding: 2em;
+  box-sizing: border-box;
 }
 
 .read-the-docs {

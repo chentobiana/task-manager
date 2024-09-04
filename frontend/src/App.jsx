@@ -38,6 +38,10 @@ function App() {
   const handleAddTask = (newTask) => {
     setTasks([...tasks, newTask]);
     setFilteredTasks([...tasks, newTask]);
+
+    // Hide the modal after adding the task
+    setIsModalVisible(false);
+
   };
 
   const handleUpdateTask = (updatedTask) => {
@@ -45,6 +49,14 @@ function App() {
     setTasks(updatedTasks);
     setFilteredTasks(updatedTasks);
   };
+
+  const handleDeleteTask = (id) => {
+    const updatedTasks = tasks.filter(task => task._id !== id);
+    setTasks(updatedTasks);
+    setFilteredTasks(updatedTasks);
+  };
+
+
 
   return (
     <Layout>
@@ -57,7 +69,7 @@ function App() {
         <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
           <TaskFilter onFilter={handleFilter} />
           <Button type="primary" onClick={() => setIsModalVisible(true)}>Add Task</Button>
-          <TaskList tasks={filteredTasks} onTaskUpdated={handleUpdateTask} />
+          <TaskList tasks={filteredTasks} onTaskUpdated={handleUpdateTask} onDeleteTask={handleDeleteTask} />
         </div>
       </Content>
       <Footer style={{ textAlign: 'center' }}>Task Manager ©2024 Created by Chen</Footer>

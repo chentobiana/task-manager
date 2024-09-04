@@ -2,7 +2,10 @@ import React from 'react';
 import { Table, Popconfirm } from 'antd';
 import axios from 'axios';
 
-function TaskList({ tasks, onDeleteTask }) {
+const TaskList = ({ tasks, onDeleteTask }) => {
+  console.log("Tasks array:", tasks); // Log the tasks array to the console
+ 
+ 
   const handleDelete = async (id) => {
     try {
       console.log(`Attempting to delete task with ID: ${id}`); // Log the ID being sent for deletion
@@ -16,7 +19,7 @@ function TaskList({ tasks, onDeleteTask }) {
   
 
   const columns = [
-    {
+   {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
@@ -40,14 +43,14 @@ function TaskList({ tasks, onDeleteTask }) {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
-        <Popconfirm title="Are you sure to delete this task?" onConfirm={() => handleDelete(record.id)}>
+        <Popconfirm title="Are you sure to delete this task?" onConfirm={() => handleDelete(record._id)}>
           <a>Delete</a>
         </Popconfirm>
       ),
     },
   ];
 
-  return <Table dataSource={tasks} columns={columns} rowKey="id" pagination={{ pageSize: 5 }} />;
+  return <Table dataSource={tasks} columns={columns} rowKey="_id" pagination={{ pageSize: 5 }} />;
 }
 
 export default TaskList;
