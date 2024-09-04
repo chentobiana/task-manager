@@ -1,6 +1,19 @@
 import React from 'react';
-import { Table, Popconfirm } from 'antd';
+import { Table, Popconfirm, notification } from 'antd';
 import axios from 'axios';
+
+const showNotification = (type, message) => {
+  notification[type]({
+    message: message,
+    placement: 'top', // Position the notification at the top
+    duration: 3, // Duration in seconds
+    style: {
+      backgroundColor: '#f6ffed', // Green background for success
+      color: '#389e0d', // Green text
+    },
+  });
+};
+
 
 const TaskList = ({ tasks, onDeleteTask }) => {
   console.log("Tasks array:", tasks); // Log the tasks array to the console
@@ -11,6 +24,7 @@ const TaskList = ({ tasks, onDeleteTask }) => {
       console.log(`Attempting to delete task with ID: ${id}`); // Log the ID being sent for deletion
       await axios.delete(`http://localhost:5000/api/tasks/${id}`);
       onDeleteTask(id); // Remove task from the state after successful deletion
+      showNotification('success', 'The task has been removed successfully')
     } catch (error) {
       console.error('Error deleting task:', error.response ? error.response.data : error.message);
       alert('Error deleting task.');
