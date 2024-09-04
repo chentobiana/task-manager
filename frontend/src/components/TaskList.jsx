@@ -1,18 +1,7 @@
 import React from 'react';
 import { Table, Popconfirm, notification } from 'antd';
 import axios from 'axios';
-
-const showNotification = (type, message) => {
-  notification[type]({
-    message: message,
-    placement: 'top', // Position the notification at the top
-    duration: 3, // Duration in seconds
-    style: {
-      backgroundColor: '#f6ffed', // Green background for success
-      color: '#389e0d', // Green text
-    },
-  });
-};
+import { showNotification } from '../utils';
 
 
 const TaskList = ({ tasks, onDeleteTask }) => {

@@ -2,6 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import { Form, Input, DatePicker, Select, Button, Card, Space } from 'antd';
 import { CheckOutlined, CalendarOutlined, FileTextOutlined, EditOutlined } from '@ant-design/icons';
+import { showNotification } from '../utils';
+
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -24,6 +26,8 @@ function TaskForm({ onTaskAdded }) {
         console.log(`Task successfully added. Response: ${response.data}`);
         onTaskAdded(response.data); // Pass the added task to the parent component
         form.resetFields(); // Reset form fields after successful submission
+        showNotification('success', `The task "${task.name}" has been added successfully`)
+
 
       }
     } catch (error) {
