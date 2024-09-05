@@ -38,12 +38,14 @@ const TaskList = ({ tasks, onDeleteTask, onTaskUpdate}) => {
         ...editingValues,
         dueDate: editingValues.dueDate.format('YYYY-MM-DD'),
       };
+      console.log('Updating task with ID:', record._id, 'and data:', updatedTask); // Log the data being sent
       await axios.put(`http://localhost:5000/api/tasks/${record._id}`, updatedTask);
       onTaskUpdate(updatedTask);
       showNotification('success', `The task "${updatedTask.name}" has been updated successfully`);
     } catch (error) {
       console.error('Error updating task:', error);
-      alert('Error updating task.');
+      console.error('Error response data:', error.response ? error.response.data : 'No response data');
+      alert('Error updating task.');;
     } finally {
       setEditingTaskId(null); // Exit editing mode
     }

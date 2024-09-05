@@ -69,7 +69,7 @@ function App() {
       <Content style={{ padding: '0 50px', marginTop: 16 }}>
         <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
           <TaskFilter onFilter={handleFilter} />
-          <TaskList tasks={filteredTasks} onTaskUpdated={handleUpdateTask} onDeleteTask={handleDeleteTask} />
+          <TaskList tasks={filteredTasks} onTaskUpdate={handleUpdateTask} onDeleteTask={handleDeleteTask} />
           <Button type="primary" onClick={() => setIsModalVisible(true)}>Add Task</Button>
         </div>
       </Content>

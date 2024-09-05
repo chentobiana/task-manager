@@ -4,7 +4,8 @@ import { Form, Input, DatePicker, Select, Button, Card, Space } from 'antd';
 import { CheckOutlined, CalendarOutlined, FileTextOutlined, EditOutlined } from '@ant-design/icons';
 import { showNotification } from '../utils';
 
-
+const { TextArea } = Input;
+const { Option } = Select;
 
 function TaskForm({ onTaskAdded }) {
   const [form] = Form.useForm();
