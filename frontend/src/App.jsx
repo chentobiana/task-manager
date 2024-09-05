@@ -12,6 +12,7 @@ function App() {
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+
   useEffect(() => {
     // Fetch tasks from the server
     const fetchTasks = async () => {
@@ -68,13 +69,13 @@ function App() {
       <Content style={{ padding: '0 50px', marginTop: 16 }}>
         <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
           <TaskFilter onFilter={handleFilter} />
+          <TaskList tasks={filteredTasks} onTaskUpdate={handleUpdateTask} onDeleteTask={handleDeleteTask} />
           <Button type="primary" onClick={() => setIsModalVisible(true)}>Add Task</Button>
-          <TaskList tasks={filteredTasks} onTaskUpdated={handleUpdateTask} onDeleteTask={handleDeleteTask} />
         </div>
       </Content>
       <Footer style={{ textAlign: 'center' }}>Task Manager ©2024 Created by Chen</Footer>
 
-      <Modal title="Add New Task" visible={isModalVisible} onCancel={() => setIsModalVisible(false)} footer={null}>
+      <Modal title="Add a new Task" visible={isModalVisible} onCancel={() => setIsModalVisible(false)} footer={null}>
         <TaskForm onTaskAdded={handleAddTask} />
       </Modal>
     </Layout>

@@ -109,21 +109,33 @@ app.post('/api/tasks', async (req, res) => {
 });
 
 // Update a task
-app.put('/api/tasks/:id', (req, res) => {
+app.put('/api/tasks/:id', async (req, res) => {
+    console.log('Received update request with body:', req.body); // Log incoming request body
     const { id } = req.params;
     const { name, description, dueDate, status } = req.body;
 
-    const task = tasks.find(task => task.id == id);
-    if (!task) {
-        return res.status(404).json({ message: "Task not found." });
+    try {
+        // Find the task by ID and update it with the new values
+        const updatedTask = await Task.findByIdAndUpdate(id, {
+            name,
+            description,
+            dueDate,
+            status,
+            lastModified: Date.now() // Update the lastModified date
+        }, { new: true, runValidators: true }); // `new: true` returns the updated document
+
+        if (!updatedTask) {
+            return res.status(404).json({ message: "Task not found." });
+        }
+
+        else{
+            console.log('Task found');
+        }
+        res.status(200).json(updatedTask);
+        console.log('Task update successfully');
+    } catch (err) {
+        res.status(400).json({ message: err.message });
     }
-
-    task.name = name || task.name;
-    task.description = description || task.description;
-    task.dueDate = dueDate || task.dueDate;
-    task.status = status || task.status;
-
-    res.status(200).json(task);
 });
 
 // Delete a task
