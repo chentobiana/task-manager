@@ -12,6 +12,7 @@ function App() {
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+
   useEffect(() => {
     // Fetch tasks from the server
     const fetchTasks = async () => {
@@ -74,7 +75,7 @@ function App() {
       </Content>
       <Footer style={{ textAlign: 'center' }}>Task Manager ©2024 Created by Chen</Footer>
 
-      <Modal title="Add a New Task" visible={isModalVisible} onCancel={() => setIsModalVisible(false)} footer={null}>
+      <Modal title="Add a new Task" visible={isModalVisible} onCancel={() => setIsModalVisible(false)} footer={null}>
         <TaskForm onTaskAdded={handleAddTask} />
       </Modal>
     </Layout>

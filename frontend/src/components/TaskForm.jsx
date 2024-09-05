@@ -5,9 +5,6 @@ import { CheckOutlined, CalendarOutlined, FileTextOutlined, EditOutlined } from 
 import { showNotification } from '../utils';
 
 
-const { TextArea } = Input;
-const { Option } = Select;
-
 
 function TaskForm({ onTaskAdded }) {
   const [form] = Form.useForm();
