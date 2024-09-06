@@ -46,21 +46,61 @@ const TaskList = ({ tasks, onDeleteTask, onEditTask }) => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      render: (text, record) =>
+        editingTaskId === record._id ? (
+          <Input
+            value={editingValues.name}
+            onChange={(e) => handleChange('name', e.target.value)}
+          />
+        ) : (
+          text
+        ),
     },
     {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
+      render: (text, record) =>
+        editingTaskId === record._id ? (
+          <TextArea
+            value={editingValues.description}
+            onChange={(e) => handleChange('description', e.target.value)}
+          />
+        ) : (
+          text
+        ),
     },
     {
       title: 'Due Date',
       dataIndex: 'dueDate',
       key: 'dueDate',
+      render: (text, record) =>
+        editingTaskId === record._id ? (
+          <DatePicker
+            value={editingValues.dueDate}
+            onChange={(date) => handleChange('dueDate', date)}
+          />
+        ) : (
+          moment(text).format('YYYY-MM-DD')
+        ),
     },
     {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
+      render: (text, record) =>
+        editingTaskId === record._id ? (
+          <Select
+            value={editingValues.status}
+            onChange={(value) => handleChange('status', value)}
+          >
+            <Option value="Pending">Pending</Option>
+            <Option value="In Progress">In Progress</Option>
+            <Option value="Completed">Completed</Option>
+          </Select>
+        ) : (
+          text
+        ),
     },
     {
       title: 'Action',
@@ -90,5 +130,6 @@ const TaskList = ({ tasks, onDeleteTask, onEditTask }) => {
     </>
   );
 }
+
 
 export default TaskList;
