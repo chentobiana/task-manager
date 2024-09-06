@@ -109,21 +109,20 @@ app.post('/api/tasks', async (req, res) => {
 });
 
 // Update a task
-app.put('/api/tasks/:id', (req, res) => {
+app.put('/api/tasks/:id', async (req, res) => {
     const { id } = req.params;
     const { name, description, dueDate, status } = req.body;
 
-    const task = tasks.find(task => task.id == id);
-    if (!task) {
-        return res.status(404).json({ message: "Task not found." });
+    console.log('in INDEX put ');
+
+    try {
+        const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        console.log('Task successfully edited');
+
+        res.status(200).json({ _id: updatedTask._id, name: updatedTask.name, description: updatedTask.description, dueDate: dueDate, status: updatedTask.status });
+    } catch (err) {
+        res.status(400).json({ message: err.message });
     }
-
-    task.name = name || task.name;
-    task.description = description || task.description;
-    task.dueDate = dueDate || task.dueDate;
-    task.status = status || task.status;
-
-    res.status(200).json(task);
 });
 
 // Delete a task

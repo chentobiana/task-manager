@@ -1,28 +1,48 @@
-import React from 'react';
-import { Table, Popconfirm, notification } from 'antd';
+import React, { useState } from 'react';
+import { Table, Popconfirm, Button, Modal } from 'antd';
 import axios from 'axios';
 import { showNotification } from '../utils';
+import EditTaskForm from './EditTaskForm';
 
+const TaskList = ({ tasks, onDeleteTask, onEditTask }) => {
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
 
-const TaskList = ({ tasks, onDeleteTask }) => {
-  console.log("Tasks array:", tasks); // Log the tasks array to the console
- 
- 
   const handleDelete = async (id) => {
     try {
-      console.log(`Attempting to delete task with ID: ${id}`); // Log the ID being sent for deletion
       await axios.delete(`http://localhost:5000/api/tasks/${id}`);
-      onDeleteTask(id); // Remove task from the state after successful deletion
-      showNotification('success', 'The task has been removed successfully')
+      onDeleteTask(id);
+      showNotification('success', 'The task has been removed successfully');
     } catch (error) {
       console.error('Error deleting task:', error.response ? error.response.data : error.message);
-      alert('Error deleting task.');
+      showNotification('error', 'Error deleting task.');
     }
   };
-  
+
+  const handleEdit = (task) => {
+    setEditingTask(task);
+    setEditModalVisible(true);
+  };
+
+  const handleEditModalClose = () => {
+    setEditModalVisible(false);
+    setEditingTask(null);
+  };
+
+  const handleEditSubmit = async (editedTask) => {
+    try {
+      const response = await axios.put(`http://localhost:5000/api/tasks/${editedTask._id}`, editedTask);
+      onEditTask(response.data);
+      setEditModalVisible(false);
+      showNotification('success', 'The task has been updated successfully');
+    } catch (error) {
+      console.error('Error updating task:', error.response ? error.response.data : error.message);
+      showNotification('error', 'Error updating task.');
+    }
+  };
 
   const columns = [
-   {
+    {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
@@ -46,14 +66,29 @@ const TaskList = ({ tasks, onDeleteTask }) => {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
-        <Popconfirm title="Are you sure to delete this task?" onConfirm={() => handleDelete(record._id)}>
-          <a>Delete</a>
-        </Popconfirm>
+        <>
+          <Button onClick={() => handleEdit(record)} style={{ marginRight: 8 }}>Edit</Button>
+          <Popconfirm title="Are you sure to delete this task?" onConfirm={() => handleDelete(record._id)}>
+            <Button danger>Delete</Button>
+          </Popconfirm>
+        </>
       ),
     },
   ];
 
-  return <Table dataSource={tasks} columns={columns} rowKey="_id" pagination={{ pageSize: 5 }} />;
+  return (
+    <>
+      <Table dataSource={tasks} columns={columns} rowKey="_id" pagination={{ pageSize: 5 }} />
+      <Modal
+        title="Edit Task"
+        visible={editModalVisible}
+        onCancel={handleEditModalClose}
+        footer={null}
+      >
+        {editingTask && <EditTaskForm task={editingTask} onSubmit={handleEditSubmit} />}
+      </Modal>
+    </>
+  );
 }
 
 export default TaskList;
