@@ -64,12 +64,12 @@ The solution features a Frontend developed with React using Vite and Ant Design,
 The connection URL should be written [here](https://github.com/chentobiana/task-manager/tree/main/backend/.env) 
 
 ## Screenshots
-### Empty task list
-![Empty Task List](frontend/images/screenshots/no%20tasks.JPG)<br />
+### Empty Task list
+![Empty Task List](frontend/images/screenshots/no-tasks.JPG)<br />
 ### Add a Task
-![Add a Task](frontend/images/screenshots/add%20a%20task.JPG)<br />
+![Add a Task](frontend/images/screenshots/add-a-task.JPG)<br />
 ### List Tasks
-![List Tasks](frontend/images/screenshots/list%20tasks.JPG)<br />
+![List Tasks](frontend/images/screenshots/list-tasks.JPG)<br />
 
 
 ## Liked this project?
