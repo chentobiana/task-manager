@@ -9,6 +9,7 @@ The solution features a Frontend developed with React using Vite and Ant Design,
 - [Architecture Diagram](#architecture-diagram)
 - [Technologies Used](#technologies-used)
 - [Setup Instructions](#setup-instructions)
+- [Screenshots](#screenshots)
 - [Liked this project?](#liked-this-project?)
 
 
@@ -16,19 +17,21 @@ The solution features a Frontend developed with React using Vite and Ant Design,
 ![Architecture Diagram](frontend/images/diagram-resized.png)
 
 ## Technologies Used
+
 ### Frontend:
-- **React**: JavaScript library for building user interfaces.
-- **Vite**: Fast and opinionated web development build tool.
-- **Ant Design**: UI framework for building elegant interfaces.
+- <img src="https://img.icons8.com/color/48/000000/react-native.png" alt="React" width="30"/> **React**: JavaScript library for building user interfaces.
+- <img src="https://vitejs.dev/logo.svg" alt="Vite" width="30"/> **Vite**: Fast and opinionated web development build tool.
+- <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/antdesign/antdesign-original.svg" alt="Ant Design" width="30"/> **Ant Design**: UI framework for building elegant interfaces.
 
 ### Backend:
-- **Express (Node.js)**: For building the RESTful API.
-- **MongoDB**: NoSQL database for storing tasks.
+- <img src="https://img.icons8.com/fluency/48/000000/node-js.png" alt="Node.js" width="30"/> **Express (Node.js)**: For building the RESTful API.
+- <img src="https://img.icons8.com/color/48/000000/mongodb.png" alt="MongoDB" width="30"/> **MongoDB**: NoSQL database for storing tasks.
+
 
 ## Setup Instructions
 ### Prerequisites
 - Node.js installed on your machine
-- MongoDB instance (URL provided below)
+- MongoDB instance
 
 ### Frontend Setup
 1. Clone the repository:
@@ -40,7 +43,6 @@ The solution features a Frontend developed with React using Vite and Ant Design,
     ```bash
     npm install antd
     npm install
-
     ```
 3. Start the development server:
     ```bash
@@ -60,6 +62,14 @@ The solution features a Frontend developed with React using Vite and Ant Design,
 ### MongoDB Setup
 1. Connect to your MongoDB instance using the provided connection URL.<br />
 The connection URL should be written [here](https://github.com/chentobiana/task-manager/tree/main/backend/.env) 
+
+## Screenshots
+### Empty task list
+![Empty Task List](frontend/images/screenshots/no%20tasks.JPG)<br />
+### Add a Task
+![Add a Task](frontend/images/screenshots/add%20a%20task.JPG)<br />
+### List Tasks
+![List Tasks](frontend/images/screenshots/list%20tasks.JPG)<br />
 
 
 ## Liked this project?
