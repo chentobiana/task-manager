@@ -1,27 +1,27 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Form, Input, DatePicker, Select, Button } from 'antd';
-import moment from 'moment';
 import { TASK_STATUS_OPTIONS } from '../constants';
+import { createTask } from '../api/taskApi';
+import { showNotification } from '../utils';
 
 const { TextArea } = Input;
 const { Option } = Select;
 
-const EditTaskForm = ({ task, onSubmit }) => {
+const AddTaskForm = ({ onTaskAdded }) => {
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    form.setFieldsValue({
-      ...task,
-      dueDate: moment(task.dueDate)
-    });
-  }, [task, form]);
-
-  const handleSubmit = (values) => {
-    onSubmit({
-      ...task,
-      ...values,
-      dueDate: values.dueDate.format('YYYY-MM-DD'),
-    });
+  const handleSubmit = async (values) => {
+    try {
+      const newTask = await createTask({
+        ...values,
+        dueDate: values.dueDate.format('YYYY-MM-DD'),
+      });
+      onTaskAdded(newTask);
+      form.resetFields();
+      showNotification('success', `The task "${newTask.name}" has been added successfully`);
+    } catch (error) {
+      showNotification('error', 'Error adding task. Please check your input.');
+    }
   };
 
   return (
@@ -29,6 +29,7 @@ const EditTaskForm = ({ task, onSubmit }) => {
       form={form}
       onFinish={handleSubmit}
       layout="vertical"
+      initialValues={{ status: 'Pending' }}
     >
       <Form.Item
         name="name"
@@ -59,10 +60,10 @@ const EditTaskForm = ({ task, onSubmit }) => {
         </Select>
       </Form.Item>
       <Form.Item>
-        <Button type="primary" htmlType="submit" block>Save Changes</Button>
+        <Button type="primary" htmlType="submit" block>Add Task</Button>
       </Form.Item>
     </Form>
   );
 };
 
-export default EditTaskForm;
+export default AddTaskForm;

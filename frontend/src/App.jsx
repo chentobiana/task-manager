@@ -1,63 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import { Layout, Menu, Button, Modal } from 'antd';
 import TaskFilter from './components/TaskFilter';
-import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
+import AddTaskForm from './components/AddTaskForm';
+import useTaskManagement from './hooks/useTaskManagement';
+import { HEADER_TITLE, FOOTER_TEXT } from './constants';
 
 const { Header, Content, Footer } = Layout;
 
 function App() {
-  const [tasks, setTasks] = useState([]);
-  const [filteredTasks, setFilteredTasks] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-
-  useEffect(() => {
-    fetchTasks();
-  }, []);
-
-  const fetchTasks = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/api/tasks');
-      setTasks(response.data);
-      setFilteredTasks(response.data);
-    } catch (error) {
-      console.error('Error fetching tasks:', error);
-    }
-  };
-
-  const handleFilter = (filter) => {
-    const { status, date } = filter;
-    const filtered = tasks.filter(task => {
-      return (!status || task.status === status) && (!date || task.dueDate === date);
-    });
-    setFilteredTasks(filtered);
-  };
-
-  const handleAddTask = (newTask) => {
-    setTasks(prevTasks => [...prevTasks, newTask]);
-    setFilteredTasks(prevFilteredTasks => [...prevFilteredTasks, newTask]);
-    setIsModalVisible(false);
-  };
-
-  const handleUpdateTask = (updatedTask) => {
-    const updatedTasks = tasks.map(task => task._id === updatedTask._id ? updatedTask : task);
-    setTasks(updatedTasks);
-    setFilteredTasks(updatedTasks);
-  };
-
-  const handleDeleteTask = (id) => {
-    const updatedTasks = tasks.filter(task => task._id !== id);
-    setTasks(updatedTasks);
-    setFilteredTasks(updatedTasks);
-  };
+  const { tasks, filteredTasks, handleFilter, handleAddTask, handleUpdateTask, handleDeleteTask } = useTaskManagement();
 
   return (
     <Layout>
       <Header>
         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1">Task Manager</Menu.Item>
+          <Menu.Item key="1">{HEADER_TITLE}</Menu.Item>
         </Menu>
       </Header>
       <Content style={{ padding: '0 50px', marginTop: 16 }}>
@@ -71,10 +30,18 @@ function App() {
           <Button type="primary" onClick={() => setIsModalVisible(true)}>Add Task</Button>
         </div>
       </Content>
-      <Footer style={{ textAlign: 'center' }}>Task Manager ©2024 Created by Chen</Footer>
+      <Footer style={{ textAlign: 'center' }}>{FOOTER_TEXT}</Footer>
 
-      <Modal title="Add a new Task" visible={isModalVisible} onCancel={() => setIsModalVisible(false)} footer={null}>
-        <TaskForm onTaskAdded={handleAddTask} />
+      <Modal 
+        title="Add a New Task" 
+        visible={isModalVisible} 
+        onCancel={() => setIsModalVisible(false)} 
+        footer={null}
+      >
+        <AddTaskForm onTaskAdded={(newTask) => {
+          handleAddTask(newTask);
+          setIsModalVisible(false);
+        }} />
       </Modal>
     </Layout>
   );
