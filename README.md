@@ -1,6 +1,3 @@
-
-# Task Manager
-
 ## Overview
 This project is a Task Manager that allows users to efficiently manage a list of tasks, including adding, updating, deleting, and filtering tasks.<br />
 The solution features a Frontend developed with React using Vite and Ant Design, a Backend powered by Express (Node.js), and a MongoDB database.
