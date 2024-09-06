@@ -14,19 +14,18 @@ function App() {
 
 
   useEffect(() => {
-    // Fetch tasks from the server
-    const fetchTasks = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/tasks');
-        setTasks(response.data);
-        setFilteredTasks(response.data);
-      } catch (error) {
-        console.error('Error fetching tasks:', error);
-      }
-    };
-
     fetchTasks();
   }, []);
+
+  const fetchTasks = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/tasks');
+      setTasks(response.data);
+      setFilteredTasks(response.data);
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+    }
+  };
 
   const handleFilter = (filter) => {
     const { status, date } = filter;
@@ -37,16 +36,13 @@ function App() {
   };
 
   const handleAddTask = (newTask) => {
-    setTasks([...tasks, newTask]);
-    setFilteredTasks([...tasks, newTask]);
-
-    // Hide the modal after adding the task
+    setTasks(prevTasks => [...prevTasks, newTask]);
+    setFilteredTasks(prevFilteredTasks => [...prevFilteredTasks, newTask]);
     setIsModalVisible(false);
-
   };
 
   const handleUpdateTask = (updatedTask) => {
-    const updatedTasks = tasks.map(task => task.id === updatedTask.id ? updatedTask : task);
+    const updatedTasks = tasks.map(task => task._id === updatedTask._id ? updatedTask : task);
     setTasks(updatedTasks);
     setFilteredTasks(updatedTasks);
   };
@@ -56,8 +52,6 @@ function App() {
     setTasks(updatedTasks);
     setFilteredTasks(updatedTasks);
   };
-
-
 
   return (
     <Layout>
@@ -69,7 +63,11 @@ function App() {
       <Content style={{ padding: '0 50px', marginTop: 16 }}>
         <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
           <TaskFilter onFilter={handleFilter} />
-          <TaskList tasks={filteredTasks} onTaskUpdate={handleUpdateTask} onDeleteTask={handleDeleteTask} />
+          <TaskList 
+            tasks={filteredTasks} 
+            onEditTask={handleUpdateTask} 
+            onDeleteTask={handleDeleteTask} 
+          />
           <Button type="primary" onClick={() => setIsModalVisible(true)}>Add Task</Button>
         </div>
       </Content>

@@ -110,29 +110,16 @@ app.post('/api/tasks', async (req, res) => {
 
 // Update a task
 app.put('/api/tasks/:id', async (req, res) => {
-    console.log('Received update request with body:', req.body); // Log incoming request body
     const { id } = req.params;
     const { name, description, dueDate, status } = req.body;
 
+    console.log('in INDEX put ');
+
     try {
-        // Find the task by ID and update it with the new values
-        const updatedTask = await Task.findByIdAndUpdate(id, {
-            name,
-            description,
-            dueDate,
-            status,
-            lastModified: Date.now() // Update the lastModified date
-        }, { new: true, runValidators: true }); // `new: true` returns the updated document
+        const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        console.log('Task successfully edited');
 
-        if (!updatedTask) {
-            return res.status(404).json({ message: "Task not found." });
-        }
-
-        else{
-            console.log('Task found');
-        }
-        res.status(200).json(updatedTask);
-        console.log('Task update successfully');
+        res.status(200).json({ _id: updatedTask._id, name: updatedTask.name, description: updatedTask.description, dueDate: dueDate, status: updatedTask.status });
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
