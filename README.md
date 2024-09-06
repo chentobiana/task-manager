@@ -10,7 +10,7 @@ The solution features a Frontend developed with React using Vite and Ant Design,
 - [Technologies Used](#technologies-used)
 - [Setup Instructions](#setup-instructions)
 - [Screenshots](#screenshots)
-- [Liked this project?](#liked-this-project?)
+- [Liked this project?](#liked-this-project)
 
 
 ## Architecture Diagram
