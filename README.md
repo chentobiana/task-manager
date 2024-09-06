@@ -24,33 +24,19 @@ The solution features a Frontend developed with React using Vite and Ant Design,
 - MongoDB instance (URL provided below)
 
 ### Frontend Setup
-1. Clone the repository:
-    \`\`\`bash
-    git clone <repository-url>
-    cd work-management-solution
-    \`\`\`
-2. Install dependencies:
-    \`\`\`bash
-    npm install
-    \`\`\`
-3. Start the development server:
-    \`\`\`bash
-    npm run dev
-    \`\`\`
+1. Clone the repository: `git clone <repository-url>` `cd work-management-solution`
+2. Install dependencies: `npm install`
+3. Start the development server: `npm run dev`
 
 ### Backend Setup
-1. Install dependencies:
-    \`\`\`bash
-    npm install express mongoose
-    \`\`\`
-2. Start the Express server:
-    \`\`\`bash
-    node server.js
-    \`\`\`
+1. Install dependencies: `npm install express mongoose`
+2. Start the Express server: `node server.js`
 
 ### MongoDB Setup
 1. Connect to your MongoDB instance using the provided connection URL.<br />
 The connection URL should be written [here](https://github.com/chentobiana/task-manager/tree/main/backend/.env) 
 
 
-This `README` and diagram provide a comprehensive overview of the project and the steps needed to set up and run the Work Management Solution.
+## Liked this project?
+- Follow Chen Tobiana in LinkedIn
+- Wish her good luck with her interview :) 
