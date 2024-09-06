@@ -33,7 +33,7 @@ The solution features a Frontend developed with React using Vite and Ant Design,
 ### Frontend Setup
 1. Clone the repository:
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/chentobiana/task-manager.git
     cd work-management-solution
     ```
 2. Install dependencies:
