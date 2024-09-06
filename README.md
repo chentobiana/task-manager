@@ -65,11 +65,11 @@ The connection URL should be written [here](https://github.com/chentobiana/task-
 
 ## Screenshots
 ### Empty Task list
-![Empty Task List](frontend/images/screenshots/no-tasks.JPG)<br />
+![Empty Task List](frontend/images/screenshots/no-tasks.jpg)<br />
 ### Add a Task
-![Add a Task](frontend/images/screenshots/add-a-task.JPG)<br />
+![Add a Task](frontend/images/screenshots/add-a-task.jpg)<br />
 ### List Tasks
-![List Tasks](frontend/images/screenshots/list-tasks.JPG)<br />
+![List Tasks](frontend/images/screenshots/list-tasks.jpg)<br />
 
 
 ## Liked this project?
