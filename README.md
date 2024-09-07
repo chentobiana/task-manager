@@ -65,6 +65,7 @@ The connection URL should be written [here](https://github.com/chentobiana/task-
 ![Empty Task List](frontend/images/screenshots/no-tasks.jpg)<br />
 ### Add a Task
 ![Add a Task](frontend/images/screenshots/add-a-task.jpg)<br />
+- <img src="frontend/images/add-a-task.jpg" alt="Add-A-Task" width="60%"/> 
 ### List Tasks
 ![List Tasks](frontend/images/screenshots/list-tasks.jpg)<br />
 
