@@ -22,8 +22,7 @@ The API allows creating, retrieving, updating, and deleting tasks.
            "description": "Task Description",
            "dueDate": "Task Due Date",
            "status": "Pending | Completed | In Progress"
-         },
-         ...
+         }
        ]
        ```
 
@@ -160,4 +159,4 @@ The API allows creating, retrieving, updating, and deleting tasks.
 ### Example Usage
 - **Create a Task**:
   ```bash
-  curl -X POST http://localhost:5000/api/tasks -H "Content-Type: application/json" -d '{"name":"New Task","description":"A new task to be done","dueDate":"2024-09-10","status":"Pending"}'
+    curl -X POST http://localhost:5000/api/tasks -H "Content-Type: application/json" -d "{\"name\":\"New Task\",\"description\":\"A new task to be done\",\"dueDate\":\"2024-09-10\",\"status\":\"Pending\"}"
