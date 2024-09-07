@@ -85,7 +85,21 @@ app.get('/api/tasks', async (req, res) => {
         const tasks = await Task.find({});
         res.json(tasks); // This will include the _id as a string due to the toJSON transformation
     } catch (error) {
-        res.status(500).json({ message: 'Error retrieving tasks', error });
+        res.status(400).json({ message: 'Error retrieving tasks', error });
+    }
+});
+
+
+
+// Get task by ID
+app.get('/api/tasks/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const tasks = await Task.find(req.params.id);
+        res.status(200).json({ _id: tasks._id, name: tasks.name, description: tasks.description, dueDate: dueDate, status: tasks.status })  
+    } 
+    catch (err) {
+        res.status(400).json({ message: err.message });
     }
 });
 
@@ -141,7 +155,7 @@ app.delete('/api/tasks/:id', async (req, res) => {
         }
         res.status(200).json({ message: 'Task deleted successfully' });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(400).json({ message: err.message });
     }
 });
 
