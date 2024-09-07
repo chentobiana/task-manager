@@ -20,3 +20,5 @@ function isTodayOrFuture(dateString) {
     // Compare the input date with today's date
     return inputDate >= today;
 }
+
+module.exports = isTodayOrFuture; // Exporting the function directly
