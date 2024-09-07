@@ -162,6 +162,10 @@ app.put("/api/tasks/:id", async (req, res) => {
       return res.status(404).json({ message: "Task not found" });
     }
 
+    taskToUpdate.name = name;
+    taskToUpdate.description = description;
+    taskToUpdate.dueDate = dueDate;
+    taskToUpdate.status = status;
     taskToUpdate.lastModified = Date.now(); // Update lastModified to current date
 
     const updatedTask = await taskToUpdate.save();
