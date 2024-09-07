@@ -106,14 +106,22 @@ app.get('/api/tasks/:id', async (req, res) => {
 
 // Add a new task
 app.post('/api/tasks', async (req, res) => {
-    const { name, description, dueDate, status } = req.body;
+    const { name, description, dueDate, status} = req.body; 
     try{
 
         if (!name || !description || !dueDate || !status) {
                 return res.status(400).json({ message: "All fields are required." });
             }
 
-        const newTask = new Task(req.body);
+    
+        const newTask = new Task({
+            name,
+            description,
+            dueDate,
+            status,
+            dateAdded: Date.now() 
+        });
+
         const savedTask = await newTask.save();
         console.log('Saved task :', savedTask);
         res.status(200).json({ _id: savedTask._id, name: savedTask.name, description: savedTask.description, dueDate: dueDate, status: savedTask.status }); // Return the ID to the frontend
@@ -128,12 +136,28 @@ app.put('/api/tasks/:id', async (req, res) => {
     const { name, description, dueDate, status } = req.body;
 
     console.log('in INDEX put ');
-
     try {
-        const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        console.log('Task successfully edited');
+        const taskToUpdate = await Task.findById(req.params.id);
+        if (!taskToUpdate) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
 
-        res.status(200).json({ _id: updatedTask._id, name: updatedTask.name, description: updatedTask.description, dueDate: dueDate, status: updatedTask.status });
+        // Update only the necessary fields, avoid overwriting dateAdded
+        taskToUpdate.name = name || taskToUpdate.name;
+        taskToUpdate.description = description || taskToUpdate.description;
+        taskToUpdate.dueDate = dueDate || taskToUpdate.dueDate;
+        taskToUpdate.status = status || taskToUpdate.status;
+        taskToUpdate.lastModified = Date.now(); // Update lastModified to current date
+
+        const updatedTask = await taskToUpdate.save();
+        res.status(200).json({
+            _id: updatedTask._id,
+            name: updatedTask.name,
+            description: updatedTask.description,
+            dueDate: dueDate,
+            status: updatedTask.status,
+            dateAdded: updatedTask.dateAdded // dateAdded remains unchanged
+        });
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
