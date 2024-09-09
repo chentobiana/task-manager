@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Table, Popconfirm, Button, Modal } from 'antd';
 import EditTaskForm from './EditTaskForm';
 import { deleteTask, updateTask } from '../api/taskApi';
-import { showNotification } from '../utils';
+import { showNotification, handleApiError } from '../utils';
 import { TASK_COLUMNS } from '../constants';
 
 const TaskList = ({ tasks, onDeleteTask, onEditTask }) => {
@@ -15,7 +15,7 @@ const TaskList = ({ tasks, onDeleteTask, onEditTask }) => {
       onDeleteTask(id);
       showNotification('success', 'The task has been removed successfully');
     } catch (error) {
-      showNotification('error', 'Error deleting task.');
+      handleApiError("delete a task", error);
     }
   };
 
@@ -31,8 +31,8 @@ const TaskList = ({ tasks, onDeleteTask, onEditTask }) => {
       setEditModalVisible(false);
       showNotification('success', 'The task has been updated successfully');
     } catch (error) {
-      showNotification('error', 'Error updating task.');
-    }
+      handleApiError("edit a task", error);
+      }
   };
 
   const actionColumn = {

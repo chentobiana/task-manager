@@ -11,3 +11,21 @@ export const showNotification = (type, message) => {
     },
   });
 };
+
+export const handleApiError = (operationName, error) => {
+  if (error.response) {
+    // The request was made and the server responded with a status code
+    // that falls out of the range of 2xx
+    console.error(`${operationName} - Error response:`, error.response);
+    showNotification('error', `Error during ${operationName}: ${error.response.data.message || error.response.data}`);
+  } else if (error.request) {
+    // The request was made but no response was received
+    console.error(`${operationName} - Error request:`, error.request);
+    showNotification('error', `No response received.`);
+  } else {
+    // Something happened in setting up the request that triggered an Error
+    console.error(`${operationName} - Error message:`, error.message);
+    showNotification('error', `Error during ${operationName}: ${error.message}`);
+  }
+};
+

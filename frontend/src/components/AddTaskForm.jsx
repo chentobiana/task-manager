@@ -20,7 +20,7 @@ const AddTaskForm = ({ onTaskAdded }) => {
       form.resetFields();
       showNotification('success', `The task "${newTask.name}" has been added successfully`);
     } catch (error) {
-      showNotification('error', 'Error adding task. Please check your input.');
+      handleApiError("add a task", error);
     }
   };
 
