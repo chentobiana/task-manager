@@ -24,7 +24,14 @@ The API allows creating, retrieving, updating, and deleting tasks.
            "status": "Pending | Completed | In Progress"
          }
        ]
-       ```
+       ```     
+      - **Error Responses**:
+        - `500 Internal Error`:If an unexpected error occurs on the server.
+          ```json
+          {
+            "error": "Internal server Error"
+          }
+          ```
 
 #### 2. **Get a Single Task**
    - **Endpoint**: `/api/tasks/:id`
@@ -51,6 +58,13 @@ The API allows creating, retrieving, updating, and deleting tasks.
            "error": "Task not found"
          }
          ```
+        - `500 Internal Error`:If an unexpected error occurs on the server.
+          ```json
+          {
+            "error": "Internal server Error"
+          }
+          ```
+         
 
 #### 3. **Create a New Task**
    - **Endpoint**: `/api/tasks`
@@ -86,6 +100,13 @@ The API allows creating, retrieving, updating, and deleting tasks.
            "error": "The date should be today or in the future"
          }
          ```
+       - `500 Internal Error`:If an unexpected error occurs on the server.
+         ```json
+         {
+           "error": "Internal server Error"
+         }
+         ```
+
 
 #### 4. **Update an Existing Task**
    - **Endpoint**: `/api/tasks/:id`
@@ -129,6 +150,14 @@ The API allows creating, retrieving, updating, and deleting tasks.
            "error": "Task not found"
          }
          ```
+       - `500 Internal Error`:If an unexpected error occurs on the server.
+         ```json
+         {
+           "error": "Internal server Error"
+         }
+         ```
+
+         
 
 #### 5. **Delete a Task**
    - **Endpoint**: `/tasks/:id`
@@ -153,6 +182,12 @@ The API allows creating, retrieving, updating, and deleting tasks.
          ```json
          {
            "error": "Task not found"
+         }
+         ```
+       - `500 Internal Error`:If an unexpected error occurs on the server.
+         ```json
+         {
+           "error": "Internal server Error"
          }
          ```
 

@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Table, Popconfirm, Button, Modal } from 'antd';
 import EditTaskForm from './EditTaskForm';
 import { deleteTask, updateTask } from '../api/taskApi';
 import { showNotification, handleApiError } from '../utils';
 import { TASK_COLUMNS } from '../constants';
+import useTaskManagement from '../hooks/useTaskManagement';
+import { StateContext } from '../StateProvider';
 
-const TaskList = ({ tasks, onDeleteTask, onEditTask }) => {
+const TaskList = () => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
+  const { handleUpdateTask, handleDeleteTask } = useTaskManagement();
+  const { filteredTasks } = useContext(StateContext);
 
   const handleDelete = async (id) => {
     try {
       await deleteTask(id);
-      onDeleteTask(id);
+      handleDeleteTask(id);
       showNotification('success', 'The task has been removed successfully');
     } catch (error) {
       handleApiError("delete a task", error);
@@ -27,7 +31,7 @@ const TaskList = ({ tasks, onDeleteTask, onEditTask }) => {
   const handleEditSubmit = async (editedTask) => {
     try {
       const updatedTask = await updateTask(editedTask._id, editedTask);
-      onEditTask(updatedTask);
+      handleUpdateTask(updatedTask);
       setEditModalVisible(false);
       showNotification('success', 'The task has been updated successfully');
     } catch (error) {
@@ -52,7 +56,7 @@ const TaskList = ({ tasks, onDeleteTask, onEditTask }) => {
 
   return (
     <>
-      <Table dataSource={tasks} columns={columns} rowKey="_id" pagination={{ pageSize: 5 }} />
+      <Table dataSource={filteredTasks} columns={columns} rowKey="_id" pagination={{ pageSize: 5 }} />
       <Modal
         title="Edit Task"
         visible={editModalVisible}
