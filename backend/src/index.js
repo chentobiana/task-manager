@@ -83,7 +83,7 @@ app.get("/api/tasks", async (req, res) => {
     const tasks = await Task.find({});
     res.json(tasks); // This will include the _id as a string due to the toJSON transformation
   } catch (error) {
-    res.status(500).json({ message: "Internal error while retrieving tasks", error });
+    res.status(500).json({ message: "Internal server Error while retrieving tasks", error });
   }
 });
 
@@ -105,7 +105,7 @@ app.get("/api/tasks/:id", async (req, res) => {
       status: task.status
     });
   } catch (err) {
-    res.status(500).json({ message: "Internal error while retrieving a task", err });
+    res.status(500).json({ message: "Internal server Error while retrieving a task", err });
   }
 });
 
@@ -140,7 +140,7 @@ app.post("/api/tasks", async (req, res) => {
       status: savedTask.status
     }); // Return the ID to the frontend
   } catch (err) {
-    res.status(500).json({ message: "Internal error while adding a new task", err });
+    res.status(500).json({ message: "Internal server Error while adding a new task", err });
   }
 });
 
@@ -181,7 +181,7 @@ app.put("/api/tasks/:id", async (req, res) => {
       status: updatedTask.status,
     });
   } catch (err) {
-    res.status(500).json({ message: "Internal error while editing a task", err });
+    res.status(500).json({ message: "Internal server Error while editing a task", err });
   }
 });
 
@@ -200,7 +200,7 @@ app.delete("/api/tasks/:id", async (req, res) => {
     }
     res.status(200).json({ message: "Task deleted successfully" });
   } catch (err) {
-    res.status(500).json({ message: "Internal error while deleting a task", err });
+    res.status(500).json({ message: "Internal server Error while deleting a task", err });
   }
 });
 
