@@ -5,8 +5,6 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const isTodayOrFuture = require("./utils");
 
-let tasks = [];
-
 dotenv.config();
 
 const app = express();
@@ -85,7 +83,7 @@ app.get("/api/tasks", async (req, res) => {
     const tasks = await Task.find({});
     res.json(tasks); // This will include the _id as a string due to the toJSON transformation
   } catch (error) {
-    res.status(400).json({ message: "Error retrieving tasks", error });
+    res.status(500).json({ message: "Internal error while retrieving tasks", error });
   }
 });
 
@@ -93,24 +91,29 @@ app.get("/api/tasks", async (req, res) => {
 app.get("/api/tasks/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const tasks = await Task.find(req.params.id);
+    const task = await Task.findById(id);
+    
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
     res.status(200).json({
-      _id: tasks._id,
-      name: tasks.name,
-      description: tasks.description,
+      _id: task._id,
+      name: task.name,
+      description: task.description,
       dueDate: dueDate,
-      status: tasks.status,
+      status: task.status
     });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: "Internal error while retrieving a task", err });
   }
 });
 
 // Add a new task
 app.post("/api/tasks", async (req, res) => {
-  const { name, description, dueDate, status } = req.body;
+  const { name, description, dueDate, status,priority } = req.body;
   try {
-    if (!name || !description || !dueDate || !status) {
+    if (!name || !description || !dueDate || !status || !priority) {
       return res.status(400).json({ message: "All the fields are required." });
     }
 
@@ -134,16 +137,15 @@ app.post("/api/tasks", async (req, res) => {
       name: savedTask.name,
       description: savedTask.description,
       dueDate: dueDate,
-      status: savedTask.status,
+      status: savedTask.status
     }); // Return the ID to the frontend
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: "Internal error while adding a new task", err });
   }
 });
 
 // Update a task
 app.put("/api/tasks/:id", async (req, res) => {
-  const { id } = req.params;
   const { name, description, dueDate, status } = req.body;
 
   if (!name || !description || !dueDate || !status) {
@@ -179,7 +181,7 @@ app.put("/api/tasks/:id", async (req, res) => {
       status: updatedTask.status,
     });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: "Internal error while editing a task", err });
   }
 });
 
@@ -198,7 +200,7 @@ app.delete("/api/tasks/:id", async (req, res) => {
     }
     res.status(200).json({ message: "Task deleted successfully" });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: "Internal error while deleting a task", err });
   }
 });
 
