@@ -2,13 +2,15 @@ import React from 'react';
 import { Form, Input, DatePicker, Select, Button } from 'antd';
 import { TASK_STATUS_OPTIONS } from '../constants';
 import { createTask } from '../api/taskApi';
-import { showNotification } from '../utils';
+import { handleApiError, showNotification } from '../utils';
+import useTaskManagement from '../hooks/useTaskManagement';
 
 const { TextArea } = Input;
 const { Option } = Select;
 
-const AddTaskForm = ({ onTaskAdded }) => {
+const AddTaskForm = ({ setIsModalVisible }) => {
   const [form] = Form.useForm();
+  const { handleAddTask } = useTaskManagement();
 
   const handleSubmit = async (values) => {
     try {
@@ -16,7 +18,8 @@ const AddTaskForm = ({ onTaskAdded }) => {
         ...values,
         dueDate: values.dueDate.format('YYYY-MM-DD'),
       });
-      onTaskAdded(newTask);
+      handleAddTask(newTask);
+      setIsModalVisible(false)
       form.resetFields();
       showNotification('success', `The task "${newTask.name}" has been added successfully`);
     } catch (error) {

@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { fetchTasks } from '../api/taskApi';
+import { StateContext } from '../StateProvider';
 
 const useTaskManagement = () => {
-  const [tasks, setTasks] = useState([]);
-  const [filteredTasks, setFilteredTasks] = useState([]);
+  const { filteredTasks, setFilteredTasks, tasks, setTasks } = useContext(StateContext);
 
   useEffect(() => {
     const loadTasks = async () => {
@@ -16,10 +16,15 @@ const useTaskManagement = () => {
 
   const handleFilter = (filter) => {
     const { status, date } = filter;
-    const filtered = tasks.filter(task => 
-      (!status || task.status === status) && (!date || task.dueDate === date)
-    );
-    setFilteredTasks(filtered);
+    if (status === 'All') {
+      setFilteredTasks(tasks)
+    } else {
+      const filtered = tasks.filter(task => 
+        (!status || task.status === status) && (!date || task.dueDate === date)
+      );
+  
+      setFilteredTasks(filtered);
+    }
   };
 
   const handleAddTask = (newTask) => {
@@ -40,7 +45,7 @@ const useTaskManagement = () => {
     setFilteredTasks(filterTasks);
   };
 
-  return { tasks, filteredTasks, handleFilter, handleAddTask, handleUpdateTask, handleDeleteTask };
+  return { handleFilter, handleAddTask, handleUpdateTask, handleDeleteTask };
 };
 
 export default useTaskManagement;
