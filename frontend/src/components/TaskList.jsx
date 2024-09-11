@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Popconfirm, Button, Modal } from 'antd';
 import EditTaskForm from './EditTaskForm';
-import { deleteTask, updateTask } from '../api/taskApi';
-import { showNotification, handleApiError } from '../utils';
 import { TASK_COLUMNS } from '../constants';
+import useTaskManagement from '../hooks/useTaskManagement';
 
-const TaskList = ({ tasks, onDeleteTask, onEditTask }) => {
+const TaskList = () => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
+  const { filteredTasks, handleDeleteTask, handleUpdateTask, loadTasks } = useTaskManagement();
+
+  useEffect(() => {
+    loadTasks();
+  }, [loadTasks]);
 
   const handleDelete = async (id) => {
-    try {
-      await deleteTask(id);
-      onDeleteTask(id);
-      showNotification('success', 'The task has been removed successfully');
-    } catch (error) {
-      handleApiError("delete a task", error);
-    }
+    await handleDeleteTask(id);
+    loadTasks();
   };
 
   const handleEdit = (task) => {
@@ -25,14 +24,9 @@ const TaskList = ({ tasks, onDeleteTask, onEditTask }) => {
   };
 
   const handleEditSubmit = async (editedTask) => {
-    try {
-      const updatedTask = await updateTask(editedTask._id, editedTask);
-      onEditTask(updatedTask);
-      setEditModalVisible(false);
-      showNotification('success', 'The task has been updated successfully');
-    } catch (error) {
-      handleApiError("edit a task", error);
-      }
+    await handleUpdateTask(editedTask);
+    setEditModalVisible(false);
+    loadTasks();
   };
 
   const actionColumn = {
@@ -52,7 +46,7 @@ const TaskList = ({ tasks, onDeleteTask, onEditTask }) => {
 
   return (
     <>
-      <Table dataSource={tasks} columns={columns} rowKey="_id" pagination={{ pageSize: 5 }} />
+      <Table dataSource={filteredTasks} columns={columns} rowKey="_id" pagination={{ pageSize: 5 }} />
       <Modal
         title="Edit Task"
         visible={editModalVisible}

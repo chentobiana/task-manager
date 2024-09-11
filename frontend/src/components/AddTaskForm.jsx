@@ -1,8 +1,6 @@
 import React from 'react';
 import { Form, Input, DatePicker, Select, Button } from 'antd';
 import { TASK_STATUS_OPTIONS } from '../constants';
-import { createTask } from '../api/taskApi';
-import { showNotification } from '../utils';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -11,17 +9,12 @@ const AddTaskForm = ({ onTaskAdded }) => {
   const [form] = Form.useForm();
 
   const handleSubmit = async (values) => {
-    try {
-      const newTask = await createTask({
-        ...values,
-        dueDate: values.dueDate.format('YYYY-MM-DD'),
-      });
-      onTaskAdded(newTask);
-      form.resetFields();
-      showNotification('success', `The task "${newTask.name}" has been added successfully`);
-    } catch (error) {
-      handleApiError("add a task", error);
-    }
+    const newTaskData = {
+      ...values,
+      dueDate: values.dueDate.format('YYYY-MM-DD'),
+    };
+    await onTaskAdded(newTaskData);
+    form.resetFields();
   };
 
   return (

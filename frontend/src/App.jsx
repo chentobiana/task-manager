@@ -10,7 +10,12 @@ const { Header, Content, Footer } = Layout;
 
 function App() {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const { tasks, filteredTasks, handleFilter, handleAddTask, handleUpdateTask, handleDeleteTask } = useTaskManagement();
+  const { handleAddTask } = useTaskManagement();
+
+  const handleTaskAdded = async (newTaskData) => {
+    await handleAddTask(newTaskData);
+    setIsModalVisible(false);
+  };
 
   return (
     <Layout>
@@ -21,12 +26,8 @@ function App() {
       </Header>
       <Content style={{ padding: '0 50px', marginTop: 16 }}>
         <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
-          <TaskFilter onFilter={handleFilter} />
-          <TaskList 
-            tasks={filteredTasks} 
-            onEditTask={handleUpdateTask} 
-            onDeleteTask={handleDeleteTask} 
-          />
+          <TaskFilter />
+          <TaskList />
           <Button type="primary" onClick={() => setIsModalVisible(true)}>Add Task</Button>
         </div>
       </Content>
@@ -38,10 +39,7 @@ function App() {
         onCancel={() => setIsModalVisible(false)} 
         footer={null}
       >
-        <AddTaskForm onTaskAdded={(newTask) => {
-          handleAddTask(newTask);
-          setIsModalVisible(false);
-        }} />
+        <AddTaskForm onTaskAdded={handleTaskAdded} />
       </Modal>
     </Layout>
   );

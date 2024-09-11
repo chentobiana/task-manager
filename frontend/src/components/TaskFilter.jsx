@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { Select, DatePicker, Button } from 'antd';
 import { TASK_STATUS_OPTIONS } from '../constants';
+import useTaskManagement from '../hooks/useTaskManagement';
 
 const { Option } = Select;
 
-const TaskFilter = ({ onFilter }) => {
+const TaskFilter = () => {
   const [status, setStatus] = useState('');
   const [date, setDate] = useState(null);
+  const { handleFilter } = useTaskManagement();
 
-  const handleFilter = () => {
-    onFilter({ 
+  const onFilter = () => {
+    handleFilter({ 
       status, 
       date: date ? date.format('YYYY-MM-DD') : '' 
     });
@@ -29,7 +31,7 @@ const TaskFilter = ({ onFilter }) => {
         ))}
       </Select>
       <DatePicker onChange={setDate} style={{ marginRight: 8 }} />
-      <Button onClick={handleFilter}>Filter</Button>
+      <Button onClick={onFilter}>Filter</Button>
     </div>
   );
 };
