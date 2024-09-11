@@ -24,13 +24,14 @@ The API allows creating, retrieving, updating, and deleting tasks.
            "status": "Pending | Completed | In Progress"
          }
        ]
-       ```
-       - `500 Internal Error`:If an unexpected error occurs on the server.
-         ```json
-         {
-           "error": "Internal server Error"
-         }
-         ```
+       ```     
+      - **Error Responses**:
+        - `500 Internal Error`:If an unexpected error occurs on the server.
+          ```json
+          {
+            "error": "Internal server Error"
+          }
+          ```
 
 #### 2. **Get a Single Task**
    - **Endpoint**: `/api/tasks/:id`
@@ -57,12 +58,12 @@ The API allows creating, retrieving, updating, and deleting tasks.
            "error": "Task not found"
          }
          ```
-      - `500 Internal Error`:If an unexpected error occurs on the server.
-         ```json
-         {
-           "error": "Internal server Error"
-         }
-         ```
+        - `500 Internal Error`:If an unexpected error occurs on the server.
+          ```json
+          {
+            "error": "Internal server Error"
+          }
+          ```
          
 
 #### 3. **Create a New Task**
@@ -149,7 +150,7 @@ The API allows creating, retrieving, updating, and deleting tasks.
            "error": "Task not found"
          }
          ```
-        - `500 Internal Error`:If an unexpected error occurs on the server.
+       - `500 Internal Error`:If an unexpected error occurs on the server.
          ```json
          {
            "error": "Internal server Error"
