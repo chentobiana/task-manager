@@ -1,0 +1,15 @@
+name: Code Review GPT
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  code-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Code Review GPT
+        uses: mattzcarey/code-review-gpt@v0.14.0
+        with:
+          openai_api_key: ${{ secrets.OPENAI_API_KEY }}
